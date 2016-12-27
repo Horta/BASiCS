@@ -20,13 +20,15 @@ void test_nu() {
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
   vec delta({0.2, 2.1});
-  double phij = 1.1;
   double nuj = 0.9;
   double sj = 2.1;
   double theta = 0.64;
 
-  assert(isclose(nuj_post_loglik(xj, mu, delta, phij, nuj, sj, theta),
-                 -18.209099180638268933));
+  Phi phi(3);
+  phi.set({1.6008, 1.05425});
+
+  assert(isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, sj, theta),
+                 -18.2090911836940598789169598604));
 }
 
 void test_kappa() {
@@ -44,9 +46,9 @@ void test_kappa() {
   Phi phi(3);
   phi.set(kappa);
 
-  assert(isclose(kappaj_post_loglik(X(span::all, 0), mu, delta, phi.get()(0),
-                                    nu(0), s(0), theta, kappa(0), kappa_var),
-                 -11.031259249539308698));
+  assert(isclose(kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
+                                    nu(1), s(1), theta, kappa_var),
+                 -12.671154074905397025));
 }
 
 int main() {
