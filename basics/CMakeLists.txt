@@ -1,1 +1,1 @@
-add_library(basics_objs OBJECT posterior.cpp)
+add_library(basics_objs OBJECT posterior.cpp phi.cpp)
