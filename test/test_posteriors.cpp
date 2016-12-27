@@ -1,4 +1,5 @@
 #include "basics/basics.h"
+#include "basics/s.h"
 #include "basics/phi.h"
 #include "basics/posterior.h"
 
@@ -51,9 +52,32 @@ void test_kappa() {
                  -12.671154074905397025));
 }
 
+void test_s()
+{
+  mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
+  vec mu({-0.2, 1.1});
+  vec delta({0.2, 2.1});
+
+  vec nu({0.9, 0.7, 1.1});
+  S s(3, 1.1, 2.1);
+  s.get() = {2.1, 2.2, 1.9};
+
+  std::cout << s.get() << std::endl;
+
+  // double theta = 0.64;
+  //
+  // vec kappa({1.3, 1.36});
+  // double kappa_var = 1;
+  //
+  // Phi phi(3);
+  // phi.set(kappa);
+
+}
+
 int main() {
   test_nu();
   test_kappa();
+  test_s();
 
   return 0;
 }

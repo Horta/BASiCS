@@ -5,7 +5,7 @@ using arma::sum;
 using arma::find;
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                          const Phij& phij, double nuj, double sj, double theta,
+                          const Phij &phij, double nuj, double sj, double theta,
                           double kappa_var) {
   auto pos = find(delta > 0);
 
@@ -17,13 +17,12 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
 
   double kappaj = phij.get_kappa();
-  
+
   return a + b - kappaj * kappaj / (2 * kappa_var);
 }
 
-
 double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                       const Phij& phij, double nuj, double sj, double theta) {
+                       const Phij &phij, double nuj, double sj, double theta) {
   auto pos = find(delta > 0);
   auto zer = find(delta == 0);
 
@@ -37,3 +36,11 @@ double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
 
   return a + b0 + b1;
 }
+
+// double sj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
+//                       const Phij &phij, double nuj, const Sj &sj, double theta) {
+//   double p = sj.gamma_shape() - 1 / theta;
+//   double b = 2 * sj.gamma_rate();
+//
+//   return RgigDouble(p, 2 * nuj / theta, b);
+// }
