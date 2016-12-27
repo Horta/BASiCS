@@ -7,14 +7,14 @@ void Nu::sample() {
   // }
 }
 
-// void posterior_loglikelihood(arma::vec Xj, arma::vec delta, double phij,
-//                              double yj, arma::vec mu, double nu0j) {
-//   auto deltai = 1 / delta;
-//   auto thetai = 1 / theta;
-//   auto a = phij * yj * mu + deltai;
-//   auto b = phij * nu0j * mu + deltai;
-//   double r0 = -sum((Xj + deltai) * log(a / b));
-//   double r1 = (log(yj) - log(nu0j)) * (sum(Xj) + thetai);
-//   double r2 = - (yj - nu0j) * (SumSpikeInput + (thetai/sj);
-//   return r0 + r1 + r2;
-// }
+void posterior_loglikelihood(arma::vec Xj, arma::vec delta, double phij,
+                             double yj, arma::vec mu, double nu0j) {
+  auto deltai = 1 / delta;
+  auto thetai = 1 / theta;
+  auto a = phij * yj * mu + deltai;
+  auto b = phij * nu0j * mu + deltai;
+  double r0 = -sum((Xj + deltai) * log(a / b));
+  double r1 = (log(yj) - log(nu0j)) * (sum(Xj) + thetai);
+  double r2 = - (yj - nu0j) * (SumSpikeInput + (thetai/sj);
+  return r0 + r1 + r2;
+}

@@ -10,4 +10,7 @@ file(STRINGS "VERSION" BASICS_VERSION)
 
 add_subdirectory(basics)
 
+find_package(Armadillo REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
 add_library(basics SHARED $<TARGET_OBJECTS:basics_objs>)
+target_link_libraries(basics ${ARMADILLO_LIBRARIES})
