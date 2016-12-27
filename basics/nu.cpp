@@ -10,14 +10,15 @@ void Nu::sample() {
   // }
 }
 
-void posterior_loglikelihood(const vec& x, const vec& delta, double phi,
-                             double y, const vec& mu, double nu0) {
+double posterior_loglikelihood(const vec& x, const vec& delta, double phi,
+                             double y, const vec& mu, double nu0, double s,
+                             double SumSpikeInput, double theta) {
   auto deltai = 1 / delta;
   auto thetai = 1 / theta;
   auto a = phi * y * mu + deltai;
   auto b = phi * nu0 * mu + deltai;
   double r0 = -sum((x + deltai) * log(a / b));
   double r1 = (log(y) - log(nu0)) * (sum(x) + thetai);
-  double r2 = - (y - nu0) * (SumSpikeInput + (thetai/sj);
+  double r2 = - (y - nu0) * (SumSpikeInput + (thetai/s));
   return r0 + r1 + r2;
 }

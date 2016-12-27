@@ -12,6 +12,8 @@ endif()
 
 file(STRINGS "VERSION" BASICS_VERSION)
 
+include_directories(.)
+
 add_subdirectory(basics)
 
 find_package(Armadillo REQUIRED)
@@ -22,7 +24,7 @@ target_link_libraries(basics ${ARMADILLO_LIBRARIES})
 set_target_properties(basics
   PROPERTIES
     VERSION ${BASICS_VERSION}
-  PUBLIC_HEADER "basics/basics.h")
+    PUBLIC_HEADER "basics/basics.h")
 
 add_subdirectory(test)
 
