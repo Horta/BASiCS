@@ -14,7 +14,8 @@ bool isclose(double x, double y) {
   return abs(x - y) <= atol + rtol * abs(y);
 }
 
-int main() {
+void test_nu()
+{
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
   vec delta({0.2, 2.1});
@@ -25,6 +26,10 @@ int main() {
 
   assert(isclose(nuj_post_loglik(xj, mu, delta, phij, nuj, sj, theta),
                  -18.209099180638268933));
+}
+
+int main() {
+  test_nu();
 
   return 0;
 }

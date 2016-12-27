@@ -29,4 +29,4 @@ set_target_properties(basics
 add_subdirectory(test)
 
 enable_testing()
-add_test(NAME TestNu COMMAND test_nu)
+add_test(NAME TestPosteriors COMMAND test_posteriors)
