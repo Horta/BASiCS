@@ -1,1 +1,1 @@
-add_library(basics_objs OBJECT nu.cpp)
+add_library(basics_objs OBJECT posterior.cpp)
