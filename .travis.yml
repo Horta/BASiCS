@@ -4,6 +4,16 @@ language: cpp
 compiler:
 - clang
 - gcc
+before_install:
+# Armadillo
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install -qq cmake doxygen libblas-dev liblapack-dev; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then wget http://sourceforge.net/projects/arma/files/armadillo-7.300.1.tar.xz; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then tar xvfJ armadillo-7.300.1.tar.xz; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd armadillo-7.300.1/; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cmake .; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then make; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo make install; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd ..; fi
 before_script:
 - mkdir build && pushd build && cmake .. && make && make test && popd
 - rm -rf build
