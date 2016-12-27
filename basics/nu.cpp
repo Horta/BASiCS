@@ -1,4 +1,7 @@
 #include "nu.h"
+#include <armadillo>
+
+using arma::vec;
 
 void Nu::sample() {
   // for (size_t j = 0; j < n; ++j) {
@@ -7,8 +10,8 @@ void Nu::sample() {
   // }
 }
 
-void posterior_loglikelihood(vec x, vec delta, double phi,
-                             double y, vec mu, double nu0) {
+void posterior_loglikelihood(const vec& x, const vec& delta, double phi,
+                             double y, const vec& mu, double nu0) {
   auto deltai = 1 / delta;
   auto thetai = 1 / theta;
   auto a = phi * y * mu + deltai;
