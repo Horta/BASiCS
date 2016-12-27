@@ -12,12 +12,13 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   auto id = 1 / delta(pos);
 
   double phij_ = phij.get();
-  double a = sum(xj(pos)) * log(phij_);
 
-  double b0 = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
+  double a = sum(xj(pos)) * log(phij_);
+  double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
 
   double kappaj = phij.get_kappa();
-  return a + b0 - kappaj * kappaj / (2 * kappa_var);
+  
+  return a + b - kappaj * kappaj / (2 * kappa_var);
 }
 
 
