@@ -21,8 +21,15 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   double phij_ = phij.get();
 
   cout << "ponto 4" << endl << flush;
+
+  cout << "pos" << pos << endl << flush;
+  cout << "xj(pos)" << xj(pos) << endl << flush;
+  cout << "log(phij_)" << log(phij_) << endl << flush;
+
   double a = sum(xj(pos)) * log(phij_);
+  cout << "a" << a << endl << flush;
   double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
+  cout << "b" << b << endl << flush;
 
   cout << "ponto 5" << endl << flush;
   double kappaj = phij.get_kappa();
