@@ -6,6 +6,9 @@ addons:
     packages:
     - cmake
     - libblas3gf
+    - libopenblas-base
+    - libopenblas-dev
+    - liblapack3
     - liblapack-dev
 compiler:
 - clang
