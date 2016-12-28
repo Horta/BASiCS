@@ -3,12 +3,12 @@
 /*---------------------------------------------------------------------------*/
 
 double _gig_mode(double lambda, double omega);
-void _rgig_ROU_noshift(double *res, int n, double lambda, double lambda_old,
-                       double omega, double alpha);
-void _rgig_newapproach1(double *res, int n, double lambda, double lambda_old,
-                        double omega, double alpha);
-void _rgig_ROU_shift_alt(double *res, int n, double lambda, double lambda_old,
+double _rgig_ROU_noshift(double lambda, double lambda_old,
                          double omega, double alpha);
+double _rgig_newapproach1(double lambda, double lambda_old,
+                          double omega, double alpha);
+double _rgig_ROU_shift_alt(double lambda, double lambda_old,
+                           double omega, double alpha);
 double _unur_bessel_k_nuasympt(double x, double nu, int islog,
                                int expon_scaled);
 
@@ -47,7 +47,7 @@ double rgig(double lambda, double chi, double psi)
 
 /*---------------------------------------------------------------------------*/
 
-SEXP do_rgig(int n, double lambda, double chi, double psi)
+double do_rgig(double lambda, double chi, double psi)
 /*---------------------------------------------------------------------------*/
 /* Draw sample from GIG distribution.                                        */
 /* without calling GetRNGstate() ... PutRNGstate()                           */
@@ -63,14 +63,7 @@ SEXP do_rgig(int n, double lambda, double chi, double psi)
 /*---------------------------------------------------------------------------*/
 {
   double omega, alpha; /* parameters of standard distribution */
-  SEXP sexp_res;       /* results */
-  double *res;
-  int i;
-
-  /* check sample size */
-  if (n <= 0) {
-    error("sample size 'n' must be positive integer.");
-  }
+  double res;
 
   /* check GIG parameters: */
   if (!(R_FINITE(lambda) && R_FINITE(chi) && R_FINITE(psi)) ||
@@ -80,33 +73,23 @@ SEXP do_rgig(int n, double lambda, double chi, double psi)
           lambda, chi, psi);
   }
 
-  /* allocate array for random sample */
-  PROTECT(sexp_res = NEW_NUMERIC(n));
-  res = REAL(sexp_res);
-
   if (chi < ZTOL) {
     /* special cases which are basically Gamma and Inverse Gamma distribution */
     if (lambda > 0.0) {
-      for (i = 0; i < n; i++)
-        res[i] = rgamma(lambda, 2.0 / psi);
+        res = rgamma(lambda, 2.0 / psi);
     } else {
-      for (i = 0; i < n; i++)
-        res[i] = 1.0 / rgamma(-lambda, 2.0 / psi);
+        res = 1.0 / rgamma(-lambda, 2.0 / psi);
     }
   }
-
   else if (psi < ZTOL) {
     /* special cases which are basically Gamma and Inverse Gamma distribution */
     if (lambda > 0.0) {
-      for (i = 0; i < n; i++)
-        res[i] = 1.0 / rgamma(lambda, 2.0 / chi);
+        res = 1.0 / rgamma(lambda, 2.0 / chi);
     } else {
-      for (i = 0; i < n; i++)
-        res[i] = rgamma(-lambda, 2.0 / chi);
+        res = rgamma(-lambda, 2.0 / chi);
     }
 
   }
-
   else {
     double lambda_old = lambda;
     if (lambda < 0.)
@@ -114,36 +97,22 @@ SEXP do_rgig(int n, double lambda, double chi, double psi)
     alpha = sqrt(chi / psi);
     omega = sqrt(psi * chi);
 
-    /* run generator */
-    do {
-      if (lambda > 2. || omega > 3.) {
-        /* Ratio-of-uniforms with shift by 'mode', alternative implementation */
-        _rgig_ROU_shift_alt(res, n, lambda, lambda_old, omega, alpha);
-        break;
-      }
-
-      if (lambda >= 1. - 2.25 * omega * omega || omega > 0.2) {
-        /* Ratio-of-uniforms without shift */
-        _rgig_ROU_noshift(res, n, lambda, lambda_old, omega, alpha);
-        break;
-      }
-
-      if (lambda >= 0. && omega > 0.) {
-        /* New approach, constant hat in log-concave part. */
-        _rgig_newapproach1(res, n, lambda, lambda_old, omega, alpha);
-        break;
-      }
-
-      /* else */
+    if (lambda > 2. || omega > 3.) {
+      /* Ratio-of-uniforms with shift by 'mode', alternative implementation */
+      res = _rgig_ROU_shift_alt(lambda, lambda_old, omega, alpha);
+    }
+    else if (lambda >= 1. - 2.25 * omega * omega || omega > 0.2) {
+      /* Ratio-of-uniforms without shift */
+      res = _rgig_ROU_noshift(lambda, lambda_old, omega, alpha);
+    }
+    else if (lambda >= 0. && omega > 0.) {
+      /* New approach, constant hat in log-concave part. */
+      res = _rgig_newapproach1(lambda, lambda_old, omega, alpha);
+    } else
       error("parameters must satisfy lambda>=0 and omega>0.");
-
-    } while (0);
   }
 
-  /* return result */
-  UNPROTECT(1);
-  return sexp_res;
-
+  return res;
 } /* end of do_rgig() */
 
 /*****************************************************************************/
