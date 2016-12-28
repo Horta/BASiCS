@@ -3,12 +3,12 @@
 /*---------------------------------------------------------------------------*/
 
 double _gig_mode(double lambda, double omega);
-double _rgig_ROU_noshift(double lambda, double lambda_old,
-                         double omega, double alpha);
-double _rgig_newapproach1(double lambda, double lambda_old,
-                          double omega, double alpha);
-double _rgig_ROU_shift_alt(double lambda, double lambda_old,
-                           double omega, double alpha);
+double _rgig_ROU_noshift(double lambda, double lambda_old, double omega,
+                         double alpha);
+double _rgig_newapproach1(double lambda, double lambda_old, double omega,
+                          double alpha);
+double _rgig_ROU_shift_alt(double lambda, double lambda_old, double omega,
+                           double alpha);
 double _unur_bessel_k_nuasympt(double x, double nu, int islog,
                                int expon_scaled);
 
@@ -76,21 +76,19 @@ double do_rgig(double lambda, double chi, double psi)
   if (chi < ZTOL) {
     /* special cases which are basically Gamma and Inverse Gamma distribution */
     if (lambda > 0.0) {
-        res = rgamma(lambda, 2.0 / psi);
+      res = rgamma(lambda, 2.0 / psi);
     } else {
-        res = 1.0 / rgamma(-lambda, 2.0 / psi);
+      res = 1.0 / rgamma(-lambda, 2.0 / psi);
     }
-  }
-  else if (psi < ZTOL) {
+  } else if (psi < ZTOL) {
     /* special cases which are basically Gamma and Inverse Gamma distribution */
     if (lambda > 0.0) {
-        res = 1.0 / rgamma(lambda, 2.0 / chi);
+      res = 1.0 / rgamma(lambda, 2.0 / chi);
     } else {
-        res = rgamma(-lambda, 2.0 / chi);
+      res = rgamma(-lambda, 2.0 / chi);
     }
 
-  }
-  else {
+  } else {
     double lambda_old = lambda;
     if (lambda < 0.)
       lambda = -lambda;
@@ -100,12 +98,10 @@ double do_rgig(double lambda, double chi, double psi)
     if (lambda > 2. || omega > 3.) {
       /* Ratio-of-uniforms with shift by 'mode', alternative implementation */
       res = _rgig_ROU_shift_alt(lambda, lambda_old, omega, alpha);
-    }
-    else if (lambda >= 1. - 2.25 * omega * omega || omega > 0.2) {
+    } else if (lambda >= 1. - 2.25 * omega * omega || omega > 0.2) {
       /* Ratio-of-uniforms without shift */
       res = _rgig_ROU_noshift(lambda, lambda_old, omega, alpha);
-    }
-    else if (lambda >= 0. && omega > 0.) {
+    } else if (lambda >= 0. && omega > 0.) {
       /* New approach, constant hat in log-concave part. */
       res = _rgig_newapproach1(lambda, lambda_old, omega, alpha);
     } else
@@ -144,8 +140,8 @@ double _gig_mode(double lambda, double omega)
 
 /*---------------------------------------------------------------------------*/
 
-void _rgig_ROU_noshift(double *res, int n, double lambda, double lambda_old,
-                       double omega, double alpha)
+double _rgig_ROU_noshift(double lambda, double lambda_old, double omega,
+                         double alpha)
 /*---------------------------------------------------------------------------*/
 /* Tpye 1:                                                                   */
 /* Ratio-of-uniforms without shift.                                          */
@@ -157,11 +153,6 @@ void _rgig_ROU_noshift(double *res, int n, double lambda, double lambda_old,
   double ym, um;  /* location of maximum of x*sqrt(f(x)); umax of MBR */
   double s, t;    /* auxiliary variables */
   double U, V, X; /* random variables */
-
-  int i;         /* loop variable (number of generated random variables) */
-  int count = 0; /* counter for total number of iterations */
-
-  /* -- Setup -------------------------------------------------------------- */
 
   /* shortcuts */
   t = 0.5 * (lambda - 1.);
@@ -188,28 +179,18 @@ void _rgig_ROU_noshift(double *res, int n, double lambda, double lambda_old,
 
   /* -- Generate sample ---------------------------------------------------- */
 
-  for (i = 0; i < n; i++) {
-    do {
-      ++count;
-      U = um * unif_rand(); /* U(0,umax) */
-      V = unif_rand();      /* U(0,vmax) */
-      X = U / V;
-    } /* Acceptance/Rejection */
-    while (((log(V)) > (t * log(X) - s * (X + 1. / X) - nc)));
+  do {
+    U = um * unif_rand(); /* U(0,umax) */
+    V = unif_rand();      /* U(0,vmax) */
+    X = U / V;
+  } /* Acceptance/Rejection */
+  while (((log(V)) > (t * log(X) - s * (X + 1. / X) - nc)));
 
-    /* store random point */
-    res[i] = (lambda_old < 0.) ? (alpha / X) : (alpha * X);
-  }
+  return (lambda_old < 0.) ? (alpha / X) : (alpha * X);
+}
 
-  /* -- End ---------------------------------------------------------------- */
-
-  return;
-} /* end of _rgig_ROU_noshift() */
-
-/*---------------------------------------------------------------------------*/
-
-void _rgig_newapproach1(double *res, int n, double lambda, double lambda_old,
-                        double omega, double alpha)
+double _rgig_newapproach1(double lambda, double lambda_old, double omega,
+                          double alpha)
 /*---------------------------------------------------------------------------*/
 /* Type 4:                                                                   */
 /* New approach, constant hat in log-concave part.                           */
@@ -218,7 +199,6 @@ void _rgig_newapproach1(double *res, int n, double lambda, double lambda_old,
 /* Case: 0 < lambda < 1, 0 < omega < 1                                       */
 /*                                                                           */
 /* Parameters:                                                               */
-/*   n ....... sample size (positive integer)                                */
 /*   lambda .. parameter for distribution                                    */
 /*   omega ... parameter for distribution                                    */
 /*                                                                           */
@@ -237,9 +217,6 @@ void _rgig_newapproach1(double *res, int n, double lambda, double lambda_old,
 
   double U, V, X; /* random numbers */
   double hx;      /* hat at X */
-
-  int i;         /* loop variable (number of generated random variables) */
-  int count = 0; /* counter for total number of iterations */
 
   /* -- Check arguments ---------------------------------------------------- */
 
@@ -284,64 +261,55 @@ void _rgig_newapproach1(double *res, int n, double lambda, double lambda_old,
 
   /* -- Generate sample ---------------------------------------------------- */
 
-  for (i = 0; i < n; i++) {
+  do {
+    /* get uniform random number */
+    V = Atot * unif_rand();
+
     do {
-      ++count;
 
-      /* get uniform random number */
-      V = Atot * unif_rand();
-
-      do {
-
-        /* domain [0, x_0] */
-        if (V <= A[0]) {
-          X = x0 * V / A[0];
-          hx = k0;
-          break;
-        }
-
-        /* domain [x_0, 2/omega] */
-        V -= A[0];
-        if (V <= A[1]) {
-          if (lambda == 0.) {
-            X = omega * exp(exp(omega) * V);
-            hx = k1 / X;
-          } else {
-            X = pow(pow(x0, lambda) + (lambda / k1 * V), 1. / lambda);
-            hx = k1 * pow(X, lambda - 1.);
-          }
-          break;
-        }
-
-        /* domain [max(x0,2/omega), Infinity] */
-        V -= A[1];
-        a = (x0 > 2. / omega) ? x0 : 2. / omega;
-        X = -2. / omega * log(exp(-omega / 2. * a) - omega / (2. * k2) * V);
-        hx = k2 * exp(-omega / 2. * X);
-        break;
-
-      } while (0);
-
-      /* accept or reject */
-      U = unif_rand() * hx;
-
-      if (log(U) <= (lambda - 1.) * log(X) - omega / 2. * (X + 1. / X)) {
-        /* store random point */
-        res[i] = (lambda_old < 0.) ? (alpha / X) : (alpha * X);
+      /* domain [0, x_0] */
+      if (V <= A[0]) {
+        X = x0 * V / A[0];
+        hx = k0;
         break;
       }
-    } while (1);
-  }
 
-  /* -- End ---------------------------------------------------------------- */
+      /* domain [x_0, 2/omega] */
+      V -= A[0];
+      if (V <= A[1]) {
+        if (lambda == 0.) {
+          X = omega * exp(exp(omega) * V);
+          hx = k1 / X;
+        } else {
+          X = pow(pow(x0, lambda) + (lambda / k1 * V), 1. / lambda);
+          hx = k1 * pow(X, lambda - 1.);
+        }
+        break;
+      }
 
-  return;
-} /* end of _rgig_newapproach1() */
+      /* domain [max(x0,2/omega), Infinity] */
+      V -= A[1];
+      a = (x0 > 2. / omega) ? x0 : 2. / omega;
+      X = -2. / omega * log(exp(-omega / 2. * a) - omega / (2. * k2) * V);
+      hx = k2 * exp(-omega / 2. * X);
+      break;
+
+    } while (0);
+
+    /* accept or reject */
+    U = unif_rand() * hx;
+
+    if (log(U) <= (lambda - 1.) * log(X) - omega / 2. * (X + 1. / X)) {
+      /* store random point */
+      return (lambda_old < 0.) ? (alpha / X) : (alpha * X);
+    }
+  } while (1);
+}
 
 /*---------------------------------------------------------------------------*/
 
-void _rgig_ROU_shift_alt(double *res, int n, double lambda, double lambda_old,
-                         double omega, double alpha)
+double _rgig_ROU_shift_alt(double lambda, double lambda_old, double omega,
+                           double alpha)
 /*---------------------------------------------------------------------------*/
 /* Type 8:                                                                   */
 /* Ratio-of-uniforms with shift by 'mode', alternative implementation.       */
@@ -353,9 +321,6 @@ void _rgig_ROU_shift_alt(double *res, int n, double lambda, double lambda_old,
   double s, t;    /* auxiliary variables */
   double U, V, X; /* random variables */
 
-  int i;         /* loop variable (number of generated random variables) */
-  int count = 0; /* counter for total number of iterations */
-
   double a, b, c; /* coefficent of cubic */
   double p, q;    /* coefficents of depressed cubic */
   double fi, fak; /* auxiliary results for Cardano's rule */
@@ -363,8 +328,6 @@ void _rgig_ROU_shift_alt(double *res, int n, double lambda, double lambda_old,
   double y1, y2; /* roots of (1/x)*sqrt(f((1/x)+m)) */
 
   double uplus, uminus; /* maximum and minimum of x*sqrt(f(x+m)) */
-
-  /* -- Setup -------------------------------------------------------------- */
 
   /* shortcuts */
   t = 0.5 * (lambda - 1.);
@@ -404,24 +367,16 @@ void _rgig_ROU_shift_alt(double *res, int n, double lambda, double lambda_old,
   uminus = (y2 - xm) * exp(t * log(y2) - s * (y2 + 1. / y2) - nc);
 
   /* -- Generate sample ---------------------------------------------------- */
+  do {
+    U = uminus + unif_rand() * (uplus - uminus); /* U(u-,u+)  */
+    V = unif_rand();                             /* U(0,vmax) */
+    X = U / V + xm;
+  } /* Acceptance/Rejection */
+  while ((X <= 0.) || ((log(V)) > (t * log(X) - s * (X + 1. / X) - nc)));
 
-  for (i = 0; i < n; i++) {
-    do {
-      ++count;
-      U = uminus + unif_rand() * (uplus - uminus); /* U(u-,u+)  */
-      V = unif_rand();                             /* U(0,vmax) */
-      X = U / V + xm;
-    } /* Acceptance/Rejection */
-    while ((X <= 0.) || ((log(V)) > (t * log(X) - s * (X + 1. / X) - nc)));
-
-    /* store random point */
-    res[i] = (lambda_old < 0.) ? (alpha / X) : (alpha * X);
-  }
-
-  /* -- End ---------------------------------------------------------------- */
-
-  return;
-} /* end of _rgig_ROU_shift_alt() */
+  /* store random point */
+  return (lambda_old < 0.) ? (alpha / X) : (alpha * X);
+}
 
 /*---------------------------------------------------------------------------*/
 
