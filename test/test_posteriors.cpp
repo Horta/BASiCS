@@ -38,14 +38,20 @@ void test_nu() {
 
 void test_kappa() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
+  cout << "X" << X << endl << flush;
   vec mu({-0.2, 1.1});
+  cout << "mu" << mu << endl << flush;
   vec delta({0.2, 2.1});
+  cout << "delta" << delta << endl << flush;
 
   vec nu({0.9, 0.7, 1.1});
+  cout << "nu" << nu << endl << flush;
   vec s({2.1, 2.2, 1.9});
+  cout << "s" << s << endl << flush;
   double theta = 0.64;
 
   vec kappa({1.3, 1.36});
+  cout << "kappa" << kappa << endl << flush;
   double kappa_var = 1;
 
   Phi phi(3);
