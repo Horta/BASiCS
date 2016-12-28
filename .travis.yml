@@ -11,8 +11,8 @@ compiler:
 - clang
 - gcc
 before_install:
-# Armadillo
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then wget https://sourceforge.net/projects/arma/files/armadillo-7.600.2.tar.xz; fi
+- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then wget https://sourceforge.net/projects/arma/files/armadillo-7.600.2.tar.xz;
+  fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then tar xvfJ armadillo-7.600.2.tar.xz; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd armadillo-7.600.2/; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cmake .; fi
@@ -33,10 +33,9 @@ notifications:
   email: false
 deploy:
   provider: releases
-  skip_cleanup: true
   api_key:
-    secure: nn2NYobqNL9erAWz7jdJp4uurjFzCM2PalDjTmO7GTZeywAkFhaV62+e7kum+VUAjdR667y4F8BhnAy5SAG7Rw1UlfQ3sAGySQc1DP22eHFca9WXoD1pW/BaoUV3M/HHmDOysdM3zMlsKb17IWd9yCU95N20gzIJmvgndlnASqtE+2LpX0ZRMrpWPsAj0SyDr1ojn953ua9sVqFcNSyrWJ2cSn3KZcEYJdVW5O5aCTkWyz/BsA1+T8PS8nxa6rnJk21WySZHMQUfHEWHg/EYB7Uj+eXUFMzopD8EI4G8Hdanbis3QfPtRyzO0HTAQbM9L3ll4FqTQUa8eY8AGgNNJaHMy++UZ4UGxoESnU1dUgtD0hpDX/JrQi0Tb45lebM7lPCNVERgFG011h+C+PDQWK/pMlUzzFmrJPzXApSMyDAxNjoLDTg4nukUATtrIcfYsSu6+dsX5RFTEKD43UXd9WAASGXR+D7MsDLNb95YJ+UMXFX0g6/YjsCQdPy98hhsJS6atuz36tSBunFKEm81OvgNHVCF98v3PY7YO0lZC7rEsKOUW0hlEHZhihb4PVRZZHz3NqjboP8xTsBpmD2sVog4liTwxnQzeW60AmfJwLZCgneJPbpOFeqcxI85CruQKDlix57ooSGJ1gBUarXTy3FWCGmQg+n1DHcPykCrdFY=
+    secure: jT/bfeIfcOKeHdxQmPEpvbV8swXAoSavVcNKXZGN4j0RTpUfvS0I9RGqX8KKzq5RamVwpFiMNFtDlKO8tebb3xl7BIkF6UQU7xVuoINWsDnqLOjrJV+SLv209YS9mF9A35l4uOndjX6luKKOFGsJ7K+2cR2Db2SZx9hw7qXw61Rm+EHLrC9ZKsCDpCTVI0UsP9gSpSZ/33KruaW3Ed6fq/+bKmqXJF6mK70ivT2mXTKvonegAo33ILT5aD3WXXHRVWxFqSI9tKLtuYe12qPmC6Cw8uIkM9U1msSzJhEuWQbrqkYkOiRNVO/hTLGHvv84Y9lfRGPTLbYWk5+ZAf+UGnI3EE5IaivZPKxf3FbX0/FeJQn8ffdOjAkF057dKkuMO5c+CNICM97Ae3tgeAe237b+61J6oLkcnRtDZJQmu+/kDByJp0WU2d+XSRm1IRENz+VCvfNZthJMXqeD/1H3LbNE8iJKrCpMe/r67RVa1lkea93Qe37e3E7YY3q/rGhkBOd/Z1eTkq+huha4sivuDNfIUhfuoK0MIxuH3wMj3RUAc5h5TnWNVumWng9DdwA4zXN/hnvE6mHfGlQHhSAwkMUQ85V+4NSW3FWpvS25stdT14hVi292idlaCzamBGHtw8mCMqcHIezkKAckkfWRiFqQDO4AVbJ0l2ecJqCVAyw=
   on:
     tags: true
-    repo: Horta/basics
+    repo: Horta/BASiCS
     condition: "$CC = clang"
