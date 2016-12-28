@@ -37,7 +37,7 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   cout << (xj(pos) + id) % log(mu(pos) * phij_ * nuj + id) << endl << flush;
   cout << "depois da sum:" << endl << flush;
   cout << sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id)) << endl << flush;
-  count << "separacao" << endl << flush;
+  cout << "separacao" << endl << flush;
   cout << -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id)) << endl << flush;
   cout << "-------------" << endl << flush;
   double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
