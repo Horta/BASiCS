@@ -3,21 +3,31 @@
 using arma::log;
 using arma::sum;
 using arma::find;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::flush;
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
                           const Phij &phij, double nuj, double sj, double theta,
                           double kappa_var) {
+  cout << "ponto 1" << endl << flush;
   auto pos = find(delta > 0);
 
+  cout << "ponto 2" << endl << flush;
   auto id = 1 / delta(pos);
 
+  cout << "ponto 3" << endl << flush;
   double phij_ = phij.get();
 
+  cout << "ponto 4" << endl << flush;
   double a = sum(xj(pos)) * log(phij_);
   double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
 
+  cout << "ponto 5" << endl << flush;
   double kappaj = phij.get_kappa();
 
+  cout << "ponto 6" << endl << flush;
   return a + b - kappaj * kappaj / (2 * kappa_var);
 }
 

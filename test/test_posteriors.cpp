@@ -57,6 +57,7 @@ void test_kappa() {
   Phi phi(3);
   phi.set(kappa);
 
+  cout << "passou" << endl << flush;
   assert(isclose(kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
                                     nu(1), s(1), theta, kappa_var),
                  -12.671154074905397025));
