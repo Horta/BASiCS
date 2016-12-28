@@ -12,7 +12,6 @@ compiler:
 - gcc
 before_install:
 # Armadillo
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo apt-get install -qq cmake doxygen libblas-dev liblapack-dev; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then wget https://sourceforge.net/projects/arma/files/armadillo-7.600.2.tar.xz; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then tar xvfJ armadillo-7.600.2.tar.xz; fi
 - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd armadillo-7.600.2/; fi
