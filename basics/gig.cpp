@@ -177,18 +177,16 @@ double zeroin_gig(double ax, double bx,
 /* Random sample generator from a Generalized Inverse Gaussian distribution
    (modified version of rgig.c using Rcpp classes)
 */
-double RgigDouble(double lambda, double chi, double psi) {
+double rgig(double lambda, double chi, double psi) {
   double samps;
   /* special case which is basically a gamma distribution */
   if ((chi < Z1TOL) & (lambda > 0.0)) {
-    // TODO: check if Im using the right parameters
     samps = rgamma(lambda, 2.0 / psi);
     return samps;
   }
 
   /* special cases which is basically an inverse gamma distribution */
   if ((psi < Z1TOL) & (lambda < 0.0)) {
-    // TODO: check if Im using the right parameters
     samps = 1.0 / rgamma(0.0 - lambda, 2.0 / chi);
     return samps;
   }
