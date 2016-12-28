@@ -28,11 +28,11 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
 
 double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
                        const Phij &phij, double nuj, double sj, double theta) {
-  auto pos = find(delta > 0);
-  auto zer = find(delta == 0);
+  uvec pos = find(delta > 0);
+  uvec zer = find(delta == 0);
 
-  auto q = xj.size();
-  auto id = 1 / delta(pos);
+  size_t q = xj.size();
+  vec id = 1 / delta(pos);
 
   double a = (sum(xj) + q / theta - q) * log(nuj);
 
