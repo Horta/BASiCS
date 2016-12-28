@@ -11,16 +11,7 @@ compiler:
 - clang
 - gcc
 before_install:
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then wget https://sourceforge.net/projects/arma/files/armadillo-7.600.2.tar.xz;
-  fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then tar xvfJ armadillo-7.600.2.tar.xz; fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd armadillo-7.600.2/; fi
-- perl -i -pe 's/ARMA_USE_WRAPPER true/ARMA_USE_WRAPPER false/gc' CMakeLists.txt
-- perl -i -pe 's/armadillo PROPERTIES/armadillo PROPERTIES POSITION_INDEPENDENT_CODE ON/gc' CMakeLists.txt
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cmake .; fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then make; fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo make install; fi
-- if [[ $TRAVIS_OS_NAME == 'linux' ]]; then cd ..; fi
+- travis/install_armadillo.sh
 before_script:
 - mkdir build && pushd build && cmake .. && make && make test && popd
 - rm -rf build
