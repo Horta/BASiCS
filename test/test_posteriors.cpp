@@ -75,14 +75,13 @@ void test_s()
 
   std::cout << s.get() << std::endl;
 
-  // double theta = 0.64;
-  //
-  // vec kappa({1.3, 1.36});
-  // double kappa_var = 1;
-  //
-  // Phi phi(3);
-  // phi.set(kappa);
+  double theta = 0.64;
 
+  vec kappa({1.3, 1.36});
+  double kappa_var = 1;
+
+  Phi phi(3);
+  phi.set(kappa);
 }
 
 int main() {
