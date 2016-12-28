@@ -8,6 +8,10 @@
 #include <iomanip>
 #include <iostream>
 
+
+using std::cout;
+using std::endl;
+using std::flush;
 using std::abs;
 using arma::span;
 
@@ -75,8 +79,13 @@ void test_s()
 }
 
 int main() {
+  cout << "Testing nu." << endl << flush;
   test_nu();
+
+  cout << "Testing kappa." << endl << flush;
   test_kappa();
+
+  cout << "Testing s." << endl << flush;
   test_s();
 
   return 0;
