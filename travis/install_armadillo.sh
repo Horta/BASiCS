@@ -7,7 +7,7 @@ tar xvfJ armadillo-7.600.2.tar.xz
 
 pushd armadillo-7.600.2
 # perl -i -pe 's/ARMA_USE_WRAPPER true/ARMA_USE_WRAPPER false/gc' CMakeLists.txt
-perl -i -pe 's/armadillo PROPERTIES/armadillo PROPERTIES POSITION_INDEPENDENT_CODE ON/gc' CMakeLists.txt
+# perl -i -pe 's/armadillo PROPERTIES/armadillo PROPERTIES POSITION_INDEPENDENT_CODE ON/gc' CMakeLists.txt
 
 mkdir build && cd build
 cmake .. && make && sudo make install
