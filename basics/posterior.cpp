@@ -1,6 +1,7 @@
 #include "posterior.h"
 
 using arma::log;
+using arma::accu;
 using arma::sum;
 using arma::find;
 #include <iostream>
@@ -40,7 +41,7 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   cout << "separacao" << endl << flush;
   cout << -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id)) << endl << flush;
   cout << "-------------" << endl << flush;
-  double b = -((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id)).sum();
+  double b = -accu((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
   cout << "-------------" << endl << flush;
   cout << "b" << b << endl << flush;
 
