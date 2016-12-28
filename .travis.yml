@@ -15,8 +15,8 @@ before_install:
 before_script:
 - mkdir build && pushd build && cmake .. && make VERBOSE=1
 - make test || true
-- cat Testing/Temporary/LastTest.log
-- cat Testing/Temporary/LastTestsFailed.log
+- cat Testing/Temporary/LastTest.log || true
+- cat Testing/Temporary/LastTestsFailed.log || true
 - popd
 - rm -rf build
 script:
