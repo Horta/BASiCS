@@ -1,7 +1,3 @@
-/*---------------------------------------------------------------------------*/
-/* Prototypes of private functions                                           */
-/*---------------------------------------------------------------------------*/
-
 double _gig_mode(double lambda, double omega);
 double _rgig_ROU_noshift(double lambda, double lambda_old, double omega,
                          double alpha);
@@ -20,13 +16,12 @@ double rgig(double lambda, double chi, double psi)
 /* Wrapper for do_rgig() with GetRNGstate() ... PutRNGstate()                */
 /*                                                                           */
 /* Parameters:                                                               */
-/*   n ....... sample size (positive integer)                                */
 /*   lambda .. parameter for distribution                                    */
 /*   chi   ... parameter for distribution                                    */
 /*   psi   ... parameter for distribution                                    */
 /*                                                                           */
 /* Return:                                                                   */
-/*   random sample of size 'n'                                               */
+/*   random sample                                                           */
 /*---------------------------------------------------------------------------*/
 {
   double lambda, chi, psi; /* parameters of distribution */
@@ -45,21 +40,18 @@ double rgig(double lambda, double chi, double psi)
 
 } /* end of rgig() */
 
-/*---------------------------------------------------------------------------*/
-
 double do_rgig(double lambda, double chi, double psi)
 /*---------------------------------------------------------------------------*/
 /* Draw sample from GIG distribution.                                        */
 /* without calling GetRNGstate() ... PutRNGstate()                           */
 /*                                                                           */
 /* Parameters:                                                               */
-/*   n ....... sample size (positive integer)                                */
 /*   lambda .. parameter for distribution                                    */
 /*   chi   ... parameter for distribution                                    */
 /*   psi   ... parameter for distribution                                    */
 /*                                                                           */
 /* Return:                                                                   */
-/*   random sample of size 'n'                                               */
+/*   random sample                                                           */
 /*---------------------------------------------------------------------------*/
 {
   double omega, alpha; /* parameters of standard distribution */
@@ -109,11 +101,7 @@ double do_rgig(double lambda, double chi, double psi)
   }
 
   return res;
-} /* end of do_rgig() */
-
-/*****************************************************************************/
-/* Privat Functions                                                          */
-/*****************************************************************************/
+}
 
 double _gig_mode(double lambda, double omega)
 /*---------------------------------------------------------------------------*/
@@ -136,9 +124,7 @@ double _gig_mode(double lambda, double omega)
     /* 0 <= lambda < 1: use mode of f(1/x) */
     return omega / (sqrt((1. - lambda) * (1. - lambda) + omega * omega) +
                     (1. - lambda));
-} /* end of _gig_mode() */
-
-/*---------------------------------------------------------------------------*/
+}
 
 double _rgig_ROU_noshift(double lambda, double lambda_old, double omega,
                          double alpha)
@@ -306,8 +292,6 @@ double _rgig_newapproach1(double lambda, double lambda_old, double omega,
   } while (1);
 }
 
-/*---------------------------------------------------------------------------*/
-
 double _rgig_ROU_shift_alt(double lambda, double lambda_old, double omega,
                            double alpha)
 /*---------------------------------------------------------------------------*/
@@ -458,6 +442,4 @@ double _unur_bessel_k_nuasympt(double x, double nu, int islog, int expon_scaled)
   res = log(1. + d) - nu * eta - 0.5 * (log(2. * nu * sz) - M_LNPI);
 
   return (islog ? res : exp(res));
-} /* end of _unur_bessel_k_nuasympt() */
-
-/*---------------------------------------------------------------------------*/
+}
