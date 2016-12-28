@@ -13,35 +13,16 @@ using std::flush;
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
                           const Phij &phij, double nuj, double sj, double theta,
                           double kappa_var) {
-  cout << "ponto 1" << endl << flush;
   uvec pos = find(delta > 0);
 
-  cout << "ponto 2" << endl << flush;
   vec id = 1 / delta(pos);
 
-  cout << "ponto 3" << endl << flush;
   double phij_ = phij.get();
-
-  cout << "ponto 4" << endl << flush;
-
-  cout << "pos" << pos << endl << flush;
-  cout << "xj(pos)" << xj(pos) << endl << flush;
-  cout << "log(phij_)" << log(phij_) << endl << flush;
-
   double a = sum(xj(pos)) * log(phij_);
-  cout << "a" << a << endl << flush;
-
-  cout << "separacao" << endl << flush;
-  cout << -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id)) << endl << flush;
-  cout << "-------------" << endl << flush;
   double b = -accu((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
-  cout << "-------------" << endl << flush;
-  cout << "b" << b << endl << flush;
 
-  cout << "ponto 5" << endl << flush;
   double kappaj = phij.get_kappa();
 
-  cout << "ponto 6" << endl << flush;
   return a + b - kappaj * kappaj / (2 * kappa_var);
 }
 
