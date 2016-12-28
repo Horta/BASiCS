@@ -1,14 +1,9 @@
 #include "posterior.h"
 
 using arma::log;
-using arma::accu;
 using arma::sum;
 using arma::find;
 using arma::uvec;
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::flush;
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
                           const Phij &phij, double nuj, double sj, double theta,
@@ -19,7 +14,7 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
 
   double phij_ = phij.get();
   double a = sum(xj(pos)) * log(phij_);
-  double b = -accu((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
+  double b = -sum((xj(pos) + id) % log(mu(pos) * phij_ * nuj + id));
 
   double kappaj = phij.get_kappa();
 
