@@ -23,6 +23,7 @@ target_link_libraries(basics ${ARMADILLO_LIBRARIES})
 
 set_target_properties(basics
   PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
     VERSION ${BASICS_VERSION}
     PUBLIC_HEADER "basics/basics.h")
 

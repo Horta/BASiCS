@@ -1,6 +1,6 @@
 # BASiCS
 
-[![Travis](https://img.shields.io/travis/Horta/basics.svg?style=flat-square)](https://travis-ci.org/Horta/basics)
+[![Travis](https://img.shields.io/travis/Horta/BASiCS.svg?style=flat-square)](https://travis-ci.org/Horta/BASiCS)
 
 ## Authors
 
