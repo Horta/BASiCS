@@ -16,18 +16,11 @@ compiler:
 before_install:
 - travis/install_armadillo.sh
 - travis/install_gig.sh
-before_script:
+script:
 - mkdir build && pushd build && cmake .. && make
-- make test
+- make test ARGS="-V"
 - popd
 - rm -rf build
-script:
-- mkdir dist && pushd dist && cmake .. && popd
-- mv dist basics-`cat VERSION`
-- tar czf basics-`cat VERSION`.tar.gz basics-`cat VERSION`
-- rm -rf dist
-after_failure:
-- rm -rf * && cmake .. && make && make test ARGS="-V"
 notifications:
   email: false
 deploy:
