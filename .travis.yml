@@ -19,7 +19,6 @@ before_install:
 - sudo ldconfig
 script:
 - mkdir build && pushd build && cmake .. && make
-- ls /usr/local/lib/
 - make test ARGS="-V"
 - popd
 - rm -rf build
