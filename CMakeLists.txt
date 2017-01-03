@@ -27,6 +27,7 @@ set_target_properties(basics
     PUBLIC_HEADER "basics/basics.h")
 
 target_link_libraries(basics ${ARMADILLO_LIBRARIES})
+target_link_libraries(basics gig)
 
 add_subdirectory(test)
 
