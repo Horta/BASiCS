@@ -33,7 +33,6 @@ double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
 
   double b0 = -sum((xj(pos) + id) % log(mu(pos) * phij.get() * nuj + id));
   double b1 = -nuj * sum(mu(zer) + 1 / (theta * sj));
-
   return a + b0 + b1;
 }
 
