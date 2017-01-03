@@ -15,6 +15,7 @@ compiler:
 - gcc
 before_install:
 - travis/install_armadillo.sh
+- travis/install_gig.sh
 before_script:
 - mkdir build && pushd build && cmake .. && make
 - make test
