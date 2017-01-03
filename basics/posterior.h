@@ -4,15 +4,17 @@
 #include <armadillo>
 
 #include "phi.h"
+#include "s.h"
 
 using arma::vec;
 using arma::mat;
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                          const Phij& phij, double nuj, double sj, double theta,
-                          double kappa_var);
+                          const Phij &phij, double nuj, const Sj &sj,
+                          double theta, double kappa_var);
 
 double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                       const Phij& phij, double nuj, double sj, double theta);
+                       const Phij &phij, double nuj, const Sj &sj,
+                       double theta);
 
 #endif

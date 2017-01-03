@@ -33,44 +33,39 @@ void test_nu() {
   phi.set({1.6008, 1.05425});
 
   assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2).get(), theta),
+      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
       -18.2090911836940598789169598604));
 
   delta(1) = 0;
   assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2).get(), theta),
+      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
       -18.31138418403616086));
 
   s.get()(2) = 3.1;
   assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2).get(), theta),
+      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
       -18.09537035915137082));
 }
 
 void test_kappa() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
-  cout << "X" << X << endl << flush;
   vec mu({-0.2, 1.1});
-  cout << "mu" << mu << endl << flush;
   vec delta({0.2, 2.1});
-  cout << "delta" << delta << endl << flush;
 
   vec nu({0.9, 0.7, 1.1});
-  cout << "nu" << nu << endl << flush;
-  vec s({2.1, 2.2, 1.9});
-  cout << "s" << s << endl << flush;
+
+  S s(3, 1.0, 1.0);
+  s.get() = {2.1, 2.2, 1.9};
   double theta = 0.64;
 
   vec kappa({1.3, 1.36});
-  cout << "kappa" << kappa << endl << flush;
   double kappa_var = 1;
 
   Phi phi(3);
   phi.set(kappa);
 
-  cout << "passou" << endl << flush;
   assert(isclose(kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
-                                    nu(1), s(1), theta, kappa_var),
+                                    nu(1), s.sj(1), theta, kappa_var),
                  -12.671154074905397025));
 }
 
@@ -82,8 +77,6 @@ void test_s() {
   vec nu({0.9, 0.7, 1.1});
   S s(3, 1.1, 2.1);
   s.get() = {2.1, 2.2, 1.9};
-
-  std::cout << s.get() << std::endl;
 
   double theta = 0.64;
 
