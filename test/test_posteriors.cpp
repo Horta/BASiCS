@@ -32,19 +32,19 @@ void test_nu() {
   Phi phi(3);
   phi.set({1.6008, 1.05425});
 
-  assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-      -18.2090911836940598789169598604));
+  assert(
+      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
+              -18.2090911836940598789169598604));
 
   delta(1) = 0;
-  assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-      -18.31138418403616086));
+  assert(
+      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
+              -18.31138418403616086));
 
   s.get()(2) = 3.1;
-  assert(isclose(
-      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-      -18.09537035915137082));
+  assert(
+      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
+              -18.09537035915137082));
 }
 
 void test_kappa() {
@@ -85,6 +85,12 @@ void test_s() {
 
   Phi phi(3);
   phi.set(kappa);
+
+  Random random(0);
+
+  assert(isclose(1.1815842109587111342,
+                 sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
+                                s.sj(1), theta, random)));
 }
 
 int main() {

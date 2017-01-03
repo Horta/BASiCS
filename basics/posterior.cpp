@@ -6,8 +6,8 @@ using arma::find;
 using arma::uvec;
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                          const Phij &phij, double nuj, const Sj &sj, double theta,
-                          double kappa_var) {
+                          const Phij &phij, double nuj, const Sj &sj,
+                          double theta, double kappa_var) {
   uvec pos = find(delta > 0);
 
   vec id = 1 / delta(pos);
@@ -22,7 +22,8 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
 }
 
 double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-                       const Phij &phij, double nuj, const Sj &sj, double theta) {
+                       const Phij &phij, double nuj, const Sj &sj,
+                       double theta) {
   uvec pos = find(delta > 0);
   uvec zer = find(delta == 0);
 
@@ -36,10 +37,10 @@ double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   return a + b0 + b1;
 }
 
-// double sj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
-//                       const Phij &phij, double nuj, const Sj &sj, double theta) {
-//   double p = sj.gamma_shape() - 1 / theta;
-//   double b = 2 * sj.gamma_rate();
-//
-//   return RgigDouble(p, 2 * nuj / theta, b);
-// }
+double sj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
+                      const Phij &phij, double nuj, const Sj &sj,
+                      double theta, Random &random) {
+  double p = sj.gamma_shape() - 1 / theta;
+  double b = 2 * sj.gamma_rate();
+  return random.gig(p, 2 * nuj / theta, b);
+}
