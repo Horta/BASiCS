@@ -86,7 +86,8 @@ void test_s() {
   Phi phi(3);
   phi.set(kappa);
 
-  Random random(0);
+  std::mt19937_64 generator(0);
+  Random random(generator);
 
   double bla = sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
                  s.sj(1), theta, random);
