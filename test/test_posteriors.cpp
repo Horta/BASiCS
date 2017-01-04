@@ -90,13 +90,11 @@ void test_s() {
   Random random(generator);
 
   double bla = sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
-                 s.sj(1), theta, random);
+                              s.sj(1), theta, random);
 
-  std::cout << "bla" << std::endl;
-  std::cout << bla << std::endl;
-  // assert(isclose(1.1815842109587111342,
-  //                sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
-  //                               s.sj(1), theta, random)));
+  assert(isclose(1.6883913147833378154,
+                 sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
+                                s.sj(1), theta, random)));
 }
 
 int main() {
