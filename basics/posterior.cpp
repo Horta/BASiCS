@@ -1,9 +1,13 @@
 #include "posterior.h"
 
+#include <cmath>
+
 using arma::log;
 using arma::sum;
 using arma::find;
 using arma::uvec;
+
+using std::lgamma;
 
 double mui_post_loglik(const vec &xi, double mui, double deltai, const Phi &phi,
                        const vec &nu) {
@@ -12,6 +16,16 @@ double mui_post_loglik(const vec &xi, double mui, double deltai, const Phi &phi,
       sum((xi + 1 / deltai) % log(phi.get() % nu * mui + 1 / deltai));
 
   return left - right;
+}
+
+double deltai_post_loglik(const vec &xi, double mui, double deltai,
+                          const Phi &phi, const vec &nu) {
+  double a = xi.n_elem * std::lgamma(1 / deltai);
+
+  vec b0 = arma::lgamma(xi + 1 / deltai);
+  vec b1 = (xi + 1 / deltai) % arma::lgamma(phi.get() % nu * mui + 1 / deltai);
+
+  return -a + sum(b0 - b1);
 }
 
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,

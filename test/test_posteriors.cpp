@@ -39,6 +39,25 @@ void test_mu() {
   assert(isclose(mui, -2.8960000990179226577));
 }
 
+void test_delta() {
+  mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
+  vec mu({-0.2, 1.1});
+  vec delta({0.2, 2.1});
+
+  vec nu({0.9, 0.7, 1.1});
+
+  vec kappa({1.3, 1.36});
+
+  Phi phi(3);
+  phi.set(kappa);
+
+  std::mt19937_64 generator(0);
+  Random random(generator);
+
+  double r = deltai_post_loglik(X(1, span::all).t(), mu(1), delta(1), phi, nu);
+  assert(isclose(r, -3.3039472650673218368));
+}
+
 void test_nu() {
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
@@ -122,6 +141,9 @@ int main() {
 
   cout << "Testing s." << endl << flush;
   test_s();
+
+  cout << "Testing delta." << endl << flush;
+  test_delta();
 
   return 0;
 }
