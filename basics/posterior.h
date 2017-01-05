@@ -14,6 +14,8 @@ using arma::mat;
 double mui_post_loglik(const vec &xi, double mui, double deltai, const Phi &phi,
                        const vec &nu);
 
+double theta_post_loglik(size_t n, double nuj, const Sj &sj, double theta);
+
 double deltai_post_loglik(const vec &xi, double mui, double deltai,
                           const Phi &phi, const vec &nu);
 

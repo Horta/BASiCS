@@ -28,6 +28,12 @@ double deltai_post_loglik(const vec &xi, double mui, double deltai,
   return -a + sum(b0 - b1);
 }
 
+double theta_post_loglik(size_t n, double nuj, const Sj &sj, double theta) {
+  double a = sum(log(nuj) - log(sj.get())) / theta;
+  double b = n * std::lgamma(1 / theta);
+  return a - b;
+}
+
 double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
                           const Phij &phij, double nuj, const Sj &sj,
                           double theta, double kappa_var) {

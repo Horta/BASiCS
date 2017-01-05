@@ -58,6 +58,18 @@ void test_delta() {
   assert(isclose(r, -3.3039472650673218368));
 }
 
+void test_theta() {
+  vec nu({0.9, 0.7, 1.1});
+
+  S s(3, 1.0, 1.0);
+  s.get() = {1.1, 1.2, 2.1};
+  double theta = 0.64;
+
+  double r = theta_post_loglik(3, nu(1), s.sj(1), theta);
+
+  assert(isclose(r, -0.49205598225087332498));
+}
+
 void test_nu() {
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
@@ -144,6 +156,9 @@ int main() {
 
   cout << "Testing delta." << endl << flush;
   test_delta();
+
+  cout << "Testing theta." << endl << flush;
+  test_theta();
 
   return 0;
 }
