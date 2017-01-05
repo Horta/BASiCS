@@ -20,6 +20,25 @@ bool isclose(double x, double y) {
   return abs(x - y) <= atol + rtol * abs(y);
 }
 
+void test_mu() {
+  mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
+  vec mu({-0.2, 1.1});
+  vec delta({0.2, 2.1});
+
+  vec nu({0.9, 0.7, 1.1});
+
+  vec kappa({1.3, 1.36});
+
+  Phi phi(3);
+  phi.set(kappa);
+
+  std::mt19937_64 generator(0);
+  Random random(generator);
+
+  double mui = mui_post_loglik(X(1, span::all).t(), mu(1), delta(1), phi, nu);
+  assert(isclose(mui, -2.8960000990179226577));
+}
+
 void test_nu() {
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
@@ -32,19 +51,16 @@ void test_nu() {
   Phi phi(3);
   phi.set({1.6008, 1.05425});
 
-  assert(
-      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-              -18.2090911836940598789169598604));
+  double r = nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
+  assert(isclose(r, -18.2090911836940598789169598604));
 
   delta(1) = 0;
-  assert(
-      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-              -18.31138418403616086));
+  r = nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
+  assert(isclose(r, -18.31138418403616086));
 
   s.get()(2) = 3.1;
-  assert(
-      isclose(nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta),
-              -18.09537035915137082));
+  r = nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
+  assert(isclose(r, -18.09537035915137082));
 }
 
 void test_kappa() {
@@ -64,9 +80,9 @@ void test_kappa() {
   Phi phi(3);
   phi.set(kappa);
 
-  assert(isclose(kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
-                                    nu(1), s.sj(1), theta, kappa_var),
-                 -12.671154074905397025));
+  double r = kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
+                                s.sj(1), theta, kappa_var);
+  assert(isclose(r, -12.671154074905397025));
 }
 
 void test_s() {
@@ -89,12 +105,15 @@ void test_s() {
   std::mt19937_64 generator(0);
   Random random(generator);
 
-  assert(isclose(1.6883913147833378154,
-                 sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
-                                s.sj(1), theta, random)));
+  double r = sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
+                            s.sj(1), theta, random);
+  assert(isclose(r, 1.6883913147833378154));
 }
 
 int main() {
+  cout << "Testing mu." << endl << flush;
+  test_mu();
+
   cout << "Testing nu." << endl << flush;
   test_nu();
 
