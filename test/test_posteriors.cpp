@@ -39,7 +39,7 @@ void test_mu() {
   Random random(generator);
 
   double mui =
-      mui_post_loglik(X(1, span::all).t(), mu(1), delta.get()(1), phi, nu);
+      mui_post_loglik(X(1, span::all).t(), mu(1), delta.deltai(1), phi, nu);
   assert(isclose(mui, -2.8960000990179226577));
 }
 
@@ -59,7 +59,7 @@ void test_delta() {
   Random random(generator);
 
   double r =
-      deltai_post_loglik(X(1, span::all).t(), mu(1), delta.get()(1), phi, nu);
+      deltai_post_loglik(X(1, span::all).t(), mu(1), delta.deltai(1), phi, nu);
   assert(isclose(r, -6.5428825996826081024));
 }
 

@@ -9,21 +9,21 @@ using arma::uvec;
 
 using std::lgamma;
 
-double mui_post_loglik(const vec &xi, double mui, double deltai, const Phi &phi,
+double mui_post_loglik(const vec &xi, double mui, const Deltai &deltai, const Phi &phi,
                        const vec &nu) {
   double left = accu(xi - 1) * mui;
   double right =
-      accu((xi + 1 / deltai) % log(phi.get() % nu * mui + 1 / deltai));
+      accu((xi + 1 / deltai.get()) % log(phi.get() % nu * mui + 1 / deltai.get()));
 
   return left - right;
 }
 
-double deltai_post_loglik(const vec &xi, double mui, double deltai,
+double deltai_post_loglik(const vec &xi, double mui, const Deltai &deltai,
                           const Phi &phi, const vec &nu) {
-  double a = xi.n_elem * std::lgamma(1 / deltai);
+  double a = xi.n_elem * std::lgamma(1 / deltai.get());
 
-  vec b0 = arma::lgamma(xi + 1 / deltai);
-  vec b1 = (xi + 1 / deltai) % log(phi.get() % nu * mui + 1 / deltai);
+  vec b0 = arma::lgamma(xi + 1 / deltai.get());
+  vec b1 = (xi + 1 / deltai.get()) % log(phi.get() % nu * mui + 1 / deltai.get());
 
   return -a + accu(b0 - b1);
 }
