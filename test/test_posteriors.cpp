@@ -56,7 +56,7 @@ void test_delta() {
   Random random(generator);
 
   double r = deltai_post_loglik(X(1, span::all).t(), mu(1), delta(1), phi, nu);
-  assert(isclose(r, -3.3039472650673218368));
+  assert(isclose(r, -6.5428825996826081024));
 }
 
 void test_theta() {

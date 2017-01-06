@@ -23,7 +23,7 @@ double deltai_post_loglik(const vec &xi, double mui, double deltai,
   double a = xi.n_elem * std::lgamma(1 / deltai);
 
   vec b0 = arma::lgamma(xi + 1 / deltai);
-  vec b1 = (xi + 1 / deltai) % arma::lgamma(phi.get() % nu * mui + 1 / deltai);
+  vec b1 = (xi + 1 / deltai) % log(phi.get() % nu * mui + 1 / deltai);
 
   return -a + accu(b0 - b1);
 }
