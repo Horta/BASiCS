@@ -13,6 +13,7 @@ using std::endl;
 using std::flush;
 using std::abs;
 using arma::span;
+using arma::mat;
 
 bool isclose(double x, double y) {
   double rtol = 1e-7;
