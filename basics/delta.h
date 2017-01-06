@@ -24,4 +24,16 @@ public:
   vec& get(void) { return delta; }
 };
 
+class Deltai {
+private:
+  const Delta& delta;
+  size_t index;
+
+public:
+  Deltai(const Delta& delta, size_t index) : delta(delta), index(index) {}
+
+  double get(void) const { return delta.get()(index); }
+  // double get_kappa(void) const { return kappa; }
+};
+
 #endif
