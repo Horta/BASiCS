@@ -1,4 +1,5 @@
 #include "basics/basics.h"
+#include "basics/delta.h"
 #include "basics/phi.h"
 #include "basics/posterior.h"
 #include "basics/s.h"
@@ -24,7 +25,8 @@ bool isclose(double x, double y) {
 void test_mu() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
   vec mu({-0.2, 1.1});
-  vec delta({0.2, 2.1});
+
+  Delta delta({0.2, 2.1});
 
   vec nu({0.9, 0.7, 1.1});
 
@@ -36,14 +38,15 @@ void test_mu() {
   std::mt19937_64 generator(0);
   Random random(generator);
 
-  double mui = mui_post_loglik(X(1, span::all).t(), mu(1), delta(1), phi, nu);
+  double mui =
+      mui_post_loglik(X(1, span::all).t(), mu(1), delta.get()(1), phi, nu);
   assert(isclose(mui, -2.8960000990179226577));
 }
 
 void test_delta() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
   vec mu({-0.2, 1.1});
-  vec delta({0.2, 2.1});
+  Delta delta({0.2, 2.1});
 
   vec nu({0.9, 0.7, 1.1});
 
@@ -55,7 +58,8 @@ void test_delta() {
   std::mt19937_64 generator(0);
   Random random(generator);
 
-  double r = deltai_post_loglik(X(1, span::all).t(), mu(1), delta(1), phi, nu);
+  double r =
+      deltai_post_loglik(X(1, span::all).t(), mu(1), delta.get()(1), phi, nu);
   assert(isclose(r, -6.5428825996826081024));
 }
 
@@ -74,7 +78,7 @@ void test_theta() {
 void test_nu() {
   vec xj({5.0, 3.0});
   vec mu({-0.2, 1.1});
-  vec delta({0.2, 2.1});
+  Delta delta({0.2, 2.1});
   double nuj = 0.9;
   S s(3, 1.0, 1.0);
   s.get() = {1.1, 1.2, 2.1};
@@ -83,10 +87,11 @@ void test_nu() {
   Phi phi(3);
   phi.set({1.6008, 1.05425});
 
-  double r = nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
+  double r =
+      nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
   assert(isclose(r, -18.2090911836940598789169598604));
 
-  delta(1) = 0;
+  delta.get()(1) = 0;
   r = nuj_post_loglik(xj, mu, delta, phi.phij(2), nuj, s.sj(2), theta);
   assert(isclose(r, -18.31138418403616086));
 
@@ -98,7 +103,7 @@ void test_nu() {
 void test_kappa() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
   vec mu({-0.2, 1.1});
-  vec delta({0.2, 2.1});
+  Delta delta({0.2, 2.1});
 
   vec nu({0.9, 0.7, 1.1});
 
@@ -112,15 +117,15 @@ void test_kappa() {
   Phi phi(3);
   phi.set(kappa);
 
-  double r = kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
-                                s.sj(1), theta, kappa_var);
+  double r = kappaj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
+                                nu(1), s.sj(1), theta, kappa_var);
   assert(isclose(r, -12.671154074905397025));
 }
 
 void test_s() {
   mat X({{5.0, 3.0, 2.0}, {1.0, 2.0, 2.0}});
   vec mu({-0.2, 1.1});
-  vec delta({0.2, 2.1});
+  Delta delta({0.2, 2.1});
 
   vec nu({0.9, 0.7, 1.1});
   S s(3, 1.1, 2.1);
@@ -137,8 +142,8 @@ void test_s() {
   std::mt19937_64 generator(0);
   Random random(generator);
 
-  double r = sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1), nu(1),
-                            s.sj(1), theta, random);
+  double r = sj_post_loglik(X(span::all, 1), mu, delta, phi.phij(1),
+                            nu(1), s.sj(1), theta, random);
   assert(isclose(r, 1.6883913147833378154));
 }
 

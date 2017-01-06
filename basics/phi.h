@@ -3,8 +3,10 @@
 
 #include <armadillo>
 #include <cmath>
+#include <list>
 
 using arma::vec;
+using std::initializer_list;
 
 class Phij {
 private:
@@ -26,6 +28,7 @@ private:
 
 public:
   Phi(size_t n) : kappa(n - 1) {}
+  Phi(initializer_list<double> kappa_list) : kappa(kappa_list) {}
 
   vec get(void) const;
   void set(const vec &kappa) { this->kappa = kappa; }

@@ -34,12 +34,12 @@ double theta_post_loglik(size_t n, double nuj, const Sj &sj, double theta) {
   return a - b;
 }
 
-double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
+double kappaj_post_loglik(const vec &xj, const vec &mu, const Delta &delta,
                           const Phij &phij, double nuj, const Sj &sj,
                           double theta, double kappa_var) {
-  uvec pos = find(delta > 0);
+  uvec pos = find(delta.get() > 0);
 
-  vec id = 1 / delta(pos);
+  vec id = 1 / delta.get()(pos);
 
   double phij_ = phij.get();
   double a = accu(xj(pos)) * log(phij_);
@@ -50,14 +50,14 @@ double kappaj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   return a + b - kappaj * kappaj / (2 * kappa_var);
 }
 
-double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
+double nuj_post_loglik(const vec &xj, const vec &mu, const Delta &delta,
                        const Phij &phij, double nuj, const Sj &sj,
                        double theta) {
-  uvec pos = find(delta > 0);
-  uvec zer = find(delta == 0);
+  uvec pos = find(delta.get() > 0);
+  uvec zer = find(delta.get() == 0);
 
   size_t q = xj.size();
-  vec id = 1 / delta(pos);
+  vec id = 1 / delta.get()(pos);
 
   double a = (accu(xj) + q / theta - q) * log(nuj);
 
@@ -66,7 +66,7 @@ double nuj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
   return a + b0 + b1;
 }
 
-double sj_post_loglik(const vec &xj, const vec &mu, const vec &delta,
+double sj_post_loglik(const vec &xj, const vec &mu, const Delta &delta,
                       const Phij &phij, double nuj, const Sj &sj, double theta,
                       Random &random) {
   double p = sj.gamma_shape() - 1 / theta;
